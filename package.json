@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ejdeposit/cat-api-client/issues"
   },
-  "homepage": "https://github.com/ejdeposit/cat-api-client#readme"
+  "homepage": "https://github.com/ejdeposit/cat-api-client#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
