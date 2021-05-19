@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 3001
 
 app.use(express.static('./cat-client/build/'))
 //app.use(express.static('./cat-client/'))
@@ -16,6 +16,13 @@ app.use(express.static('./cat-client/build/'))
 app.get('/', (req, res) => {
   //res.send('Hello World!')
   res.render('index.html')
+})
+
+//let requesturl= "https://thatcopy.pw/catapi/rest/"
+let requesturl= "/catapi/rest/"
+
+app.get('/catapi/rest/', (req, res) => {
+  res.send({'msg': 'request received'})
 })
 
 //app.post('/proxy', async (req, res) => {

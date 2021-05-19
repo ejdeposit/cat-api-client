@@ -22,18 +22,19 @@ function CatImage() {
   useEffect(() => {
     console.log("get cats here?")
     //let requesturl= "https://thatcopy.pw/catapi/rest/"
-    //let options = {
-    //    method: 'GET',
-    //    headers: { 'Content-Type': 'application/json'},
-    //}
-    ////body: JSON.stringify({"userid": userid, "password": password})
-    //fetch(requesturl, options)
-    //.then(response => {
-    //    return response.json();
-    //})
-    //.then(data => {
-    //    console.log(data);
-    //});
+    let requesturl= "/catapi/rest/"
+    let options = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json'},
+    }
+    //body: JSON.stringify({"userid": userid, "password": password})
+    fetch(requesturl, options)
+    .then(response => {
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+    });
   });
 
   if(isCatImage){
