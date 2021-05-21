@@ -1,0 +1,8 @@
+div#content {
+    padding: 20px;
+    max-width: 600px;
+}
+div#buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+}

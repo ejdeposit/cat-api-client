@@ -2,40 +2,28 @@ const express = require('express')
 const app = express()
 const port = 3001
 
+const fetch = require("node-fetch");
+const bodyParser  = require('body-parser')
+
+app.use(express.urlencoded({
+  extended: true
+}));
+app.use(express.json());
 app.use(express.static('./cat-client/build/'))
-//app.use(express.static('./cat-client/'))
-/*
- api stuff
-*/
-//const fetch = require("node-fetch");
-//var bodyParser  = require('body-parser')
-////app.use(bodyParser())
-//app.use(bodyParser.urlencoded());
-//app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   //res.send('Hello World!')
   res.render('index.html')
 })
 
-//let requesturl= "https://thatcopy.pw/catapi/rest/"
-let requesturl= "/catapi/rest/"
-
-app.get('/catapi/rest/', (req, res) => {
-  res.send({'msg': 'request received'})
+app.get('/catapi/rest/', async (req, res) => {
+  let requesturl= "https://thatcopy.pw/catapi/rest/"
+  let response = await fetch(requesturl)
+  let data = await response.json()
+  console.log(data)
+  //res.send({'msg': 'request received'})
+  res.send(data)
 })
-
-//app.post('/proxy', async (req, res) => {
-//  let state= req.body.state
-//
-//  console.log(req)
-//
-//  state = state.toLowerCase()
-//  let requesturl= `https://covidtracking.com/api/v1/states/${state}/daily.json`
-//  let response = await fetch(requesturl)
-//  let data = await response.json()
-//  res.send(data)
-//})
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

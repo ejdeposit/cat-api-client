@@ -1,77 +1,108 @@
 import logo from './logo.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { getByPlaceholderText } from '@testing-library/dom';
 import React, { useState, useEffect } from 'react';
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+
 
 function App() {
   return (
     <div className="App">
-      <CatImage></CatImage>
-      <CatButton 
-        buttonText="push me!"
-        onClick={()=>{getCat()}}
-      >
-      </CatButton>
+      <Cat></Cat>
     </div>
   );
 }
 
-function CatImage() {
-  const [isCatImage, setIsCatImage] = useState(false);
+function Cat() {
   const [catURL, setCatURL] = useState("");
-  useEffect(() => {
-    console.log("get cats here?")
+  const [catLoading, setCatLoading] = useState(false);
+  const [catWidth, setCatWidth] = useState(0)
+  const [catHeight, setCatHeight] = useState(0)
+
+  function getCat() {
+    setCatLoading(true);
+    setCatURL("");
+    console.log("fetch cats")
     //let requesturl= "https://thatcopy.pw/catapi/rest/"
     let requesturl= "/catapi/rest/"
     let options = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json'},
     }
-    //body: JSON.stringify({"userid": userid, "password": password})
+    //setCatLoading(true)
     fetch(requesturl, options)
     .then(response => {
         return response.json();
     })
     .then(data => {
         console.log(data);
+        if(data && data.url){
+          setCatURL(data.url)
+          setCatWidth(data.x)
+          setCatHeight(data.y)
+          setCatLoading(false)
+        }
     });
-  });
+  }
 
-  if(isCatImage){
+  useEffect(() => {
+    //if this is a cat or are in process of getting cat, don't get another
+    if(!catURL && !catLoading){
+    //if(!catURL){
+      getCat();
+    }
+  });
+/*
+width={catWidth} height={catHeight}
+*/
+  function CatImage() {
+    if(catURL){
+      return (
+        <div>
+          <div className="image"><img width="100%" alt="cat" src={catURL}></img></div>
+          <div>url: {catURL} </div>
+        </div>
+      );
+    }
+    else{
+      return(
+        <div>
+          <Spinner animation="border" />
+        </div>
+      );
+    }
+  }
+
+  function CatButton(props) {
     return (
-      <div>is cat!</div>
+        <div id="button">
+          <Button 
+            disabled={catLoading}
+            onClick={!catLoading ? props.onClick : null}
+          > 
+            {catLoading ? "Loading..." : props.buttonText}
+          </Button>
+        </div>
     );
   }
-  else{
-    return(
-      <div>
-        loading... 
-      </div>
-    );
-  }
-}
 
-function CatButton(props) {
   return (
-      <div id="button"><button onClick={props.onClick}>{props.buttonText}</button></div>
+    <div id="content">
+      <div id="title"><h1>Cats! Cats! Cats!</h1></div>
+      <div id="imageContainer">
+        <CatImage></CatImage>
+      </div>
+      <div id="buttonContainer">
+        <CatButton 
+          buttonText="More Cats!"
+          onClick={()=>{getCat()}}
+        >
+        </CatButton>
+      </div>
+    </div>
   );
-}
-function getCat() {
-  console.log("fetch cats")
-  let requesturl= "https://thatcopy.pw/catapi/rest/"
-  let options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json'},
-  }
-  //body: JSON.stringify({"userid": userid, "password": password})
-  fetch(requesturl, options)
-  .then(response => {
-      console.log(response)
-      return response.json();
-  })
-  .then(data => {
-      console.log(data);
-  });
 }
 
 export default App;

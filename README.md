@@ -11,11 +11,6 @@ Client:
 
 `npm start`
 
-together:  
-```
-node index.js &
-cd cat-client && npm start
-```
 react dev server serves react page and proxies api requests through node server.  
 
 ### Production
